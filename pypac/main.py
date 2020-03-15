@@ -1,9 +1,9 @@
 import pyglet
 from pyglet import gl
 
-from pypac import factory, tmx
-from pypac.gameobjects import Pacman
+from pypac import levelanalyser
 from pypac.client import input
+from pypac.gameobjects import Pacman
 from pypac.keymap import Keymap
 
 
@@ -25,17 +25,14 @@ class Game(object):
 
     def on_draw(self):
         self.window.clear()
-        # gl.glPushMatrix()
-        # gl.glScalef(1, 1, 0)
-        # #gl.glOrtho(0, 1024, 800, 0, -1, 1)
+        gl.glMatrixMode(gl.GL_PROJECTION)
+        gl.glLoadIdentity()
+        gl.glPushMatrix()
+        gl.glScalef(1.5, 1.5, 0)
+        gl.glOrtho(-300, 724, 650, -150, -1, 1)
         self.level_batch.draw()
         self.game_objects_batch.draw()
-        # gl.glPopMatrix()
-
-        # gl.glPushMatrix()
-        # gl.glOrtho(0, rectangle.width, 0, rectangle.height, -1, 1)
-        # self.ui_batch.draw()
-        # gl.glPopMatrix()
+        gl.glPopMatrix()
 
     def on_key_press(self, symbol, modifiers):
         for input_ in self.inputs:
@@ -96,10 +93,6 @@ class Game(object):
             self.inputs.append(joystick_input)
 
     def _initialize_opengl(self):
-        # Initialize Projection matrix
-        gl.glMatrixMode(gl.GL_PROJECTION)
-        gl.glLoadIdentity()
-
         # Initialize Modelview matrix
         gl.glMatrixMode(gl.GL_MODELVIEW)
         gl.glLoadIdentity()
@@ -116,16 +109,10 @@ class Game(object):
         gl.glViewport(0, 0, 1024, 800)
 
     def _start_level(self):
-        from pypac import levelanalyser
         self.level = levelanalyser.make_level(self)
         for _input in self.inputs:
             pacman = Pacman(self, 32, 32)
             self.players.append(Player(pacman, _input))
-        # loader = tmx.TmxLoader(factory.LameFactory(self), self)
-        # self.level = loader.load_map("pac")
-        # for _input in self.inputs:
-        #     pacman = Pacman(self, 4, 144)
-        #     self.players.append(Player(pacman, _input))
 
 
 if __name__ == '__main__':

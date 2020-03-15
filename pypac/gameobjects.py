@@ -125,14 +125,14 @@ class Pacman(GameObject):
                 self.sprite.image = self.right_animation
                 self._last_move = MOVE_RIGHT
 
-    def move_up(self):
+    def move_down(self):
         if self.move_target is None:
             self.move_target = int(self.x / 16), int(self.y / 16) + 1
             if self._last_move != MOVE_UP:
                 self.sprite.image = self.up_animation
                 self._last_move = MOVE_UP
 
-    def move_down(self):
+    def move_up(self):
         if self.move_target is None:
             self.move_target = int(self.x / 16), int(self.y / 16) - 1
             if self._last_move != MOVE_DOWN:
