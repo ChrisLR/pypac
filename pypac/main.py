@@ -4,13 +4,7 @@ from pyglet import gl
 from pypac import levelanalyser
 from pypac.client import input
 from pypac.gameobjects import Pacman
-from pypac.keymap import Keymap
-
-
-class Player(object):
-    def __init__(self, game_object, input):
-        self.game_object = game_object
-        self.input = input
+from pypac.players import Player
 
 
 class Game(object):
@@ -44,17 +38,7 @@ class Game(object):
 
     def update(self, dt):
         for player in self.players:
-            keymaps = player.input.get_keymaps()
-            if Keymap.Left in keymaps:
-                player.game_object.move_left()
-            elif Keymap.Right in keymaps:
-                player.game_object.move_right()
-            elif Keymap.Up in keymaps:
-                player.game_object.move_up()
-            elif Keymap.Down in keymaps:
-                player.game_object.move_down()
-
-            player.game_object.update()
+            player.update()
 
     def set_clear_color(self, rgb_color):
         r, g, b = rgb_color

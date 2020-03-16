@@ -31,10 +31,10 @@ class LameFactory(object):
         return create_func(x, y, properties)
 
     def make_pacman(self, x, y, properties):
-        return gameobjects.Pacman(self.game, x, y)
+        return gameobjects.pacman.Pacman(self.game, x, y)
 
     def make_wall(self, x, y, properties):
-        return gameobjects.Wall(self.game, x, y)
+        return gameobjects.tiles.Wall(self.game, x, y)
 
     def make_dot(self, x, y, properties):
-        return gameobjects.SmallWhiteDot(self.game, x, y)
+        return gameobjects.collectibles.SmallWhiteDot(self.game, x, y)
