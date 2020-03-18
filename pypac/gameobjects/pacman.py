@@ -2,8 +2,10 @@ import pyglet
 
 from pypac.client.graphics import sprite_sheet
 from pypac.gameobjects.base import Actor
+from pypac.gameobjects import listing
 
 
+@listing.register
 class Pacman(Actor):
     right = sprite_sheet.get_region(7, 0)
     right_animation = pyglet.image.animation.Animation(frames=[
@@ -30,6 +32,7 @@ class Pacman(Actor):
     ])
 
     base_img = left_animation
+    type_id = "pacman"
 
     def __init__(self, game, x, y):
         super().__init__(game, x, y)

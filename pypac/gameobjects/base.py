@@ -5,6 +5,7 @@ from pypac.actions import Actions
 
 class GameObject(object):
     base_img = None
+    type_id = "game_object"
 
     def __init__(self, game, x, y):
         self.game = game
@@ -32,6 +33,8 @@ class GameObject(object):
 
 
 class Actor(GameObject):
+    type_id = "actor"
+
     def __init__(self, game, x, y):
         super().__init__(game, x, y)
         self.move_speed = 1

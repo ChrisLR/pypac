@@ -1,9 +1,8 @@
 import pyglet
 from pyglet import gl
 
-from pypac import levelanalyser
+from pypac import gameobjects, levelanalyser
 from pypac.client import input
-from pypac.gameobjects import Pacman
 from pypac.players import Player
 
 
@@ -95,7 +94,7 @@ class Game(object):
     def _start_level(self):
         self.level = levelanalyser.make_level(self)
         for _input in self.inputs:
-            pacman = Pacman(self, 32, 32)
+            pacman = gameobjects.Pacman(self, 32, 32)
             self.players.append(Player(pacman, _input))
 
 
