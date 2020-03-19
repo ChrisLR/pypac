@@ -54,7 +54,8 @@ class Actions(object):
         host = self.host
         grid_x, grid_y = self.move_target
         collider = host.game.level.static_collision_map
-        if not collider.check_collision(grid_x, grid_y):
+        collision = collider.check_collision(grid_x, grid_y)
+        if not collision or not collision.blocking:
             tx = grid_x * 16
             ty = grid_y * 16
             if tx > host.x:

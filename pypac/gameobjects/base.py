@@ -5,6 +5,7 @@ from pypac.actions import Actions
 
 class GameObject(object):
     base_img = None
+    blocking = False
     type_id = "game_object"
 
     def __init__(self, game, x, y):
