@@ -4,7 +4,6 @@ from pypac.factory import LameFactory
 from pypac.gameobjects import listing
 from pypac.level import Level
 
-
 m_single = listing.get("wall_single")
 m_row_left = listing.get("wall_row_left")
 m_row_middle = listing.get("wall_row_middle")
@@ -48,7 +47,8 @@ def get_array():
 
 
 def make_level(game):
-    array = get_array()
+    #array = get_array()
+    array = read_level()
     new_array = adapt_walls(array)
     new_array = add_coins(new_array)
     rows = len(array)
@@ -172,12 +172,24 @@ class TileNode(object):
         self.value = value
 
 
-if __name__ == '__main__':
-    t = get_array()
-    a = adapt_walls(t)
-    that_str = ""
-    for y in t:
-        for x in y:
-            that_str += str(x) if x else " "
-        that_str += "\n"
-    print(that_str)
+def dump_level(array):
+    def to_ascii(value):
+        if value:
+            return "#"
+        return " "
+
+    str_array = "\n".join(("".join((to_ascii(value) for value in row)) for row in array))
+    with open('level.txt', 'w') as level_file:
+        level_file.writelines(str_array)
+
+
+def read_level():
+    def from_ascii(char):
+        if char == "#":
+            return True
+        return False
+    with open('level.txt', 'r') as level_file:
+        str_array = level_file.readlines()
+    array = [[from_ascii(char) for char in line] for line in str_array]
+
+    return array
