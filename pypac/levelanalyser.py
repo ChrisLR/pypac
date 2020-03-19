@@ -21,14 +21,14 @@ m_center_right = listing.get("wall_center_right")
 m_bottom_left = listing.get("wall_bottom_left")
 m_bottom_middle = listing.get("wall_bottom_middle")
 m_bottom_right = listing.get("wall_bottom_right")
+c_small_dot = listing.get("small_white_dot")
 
 
 def get_array():
-    array = [[False for _ in range(32)] for _ in range(32)]
+    array = [[False for _ in range(28)] for _ in range(31)]
     im = Image.open("client\\graphics\\emptylevel.png")
     im = im.convert('RGB')
     img_width, img_height = im.size
-
     for y, i in enumerate(range(0, img_height,  8)):
         for x, j in enumerate(range(0, img_width, 8)):
             box = (j, i, j+8, i+8)
@@ -42,25 +42,69 @@ def get_array():
                 array[y][x] = False
 
     # Lets try to reverse
-    inverse_array = [row for row in array[::-1]]
+    # inverse_array = [row for row in array[::-1]]
 
-    return inverse_array
+    return array
 
 
 def make_level(game):
     array = get_array()
-    adapted_array = adapt_walls(array)
+    new_array = adapt_walls(array)
+    new_array = add_coins(new_array)
     rows = len(array)
     columns = len(array[0])
     level = Level("generated", columns * 16, rows * 16)
     factory = LameFactory(game)
-    for y, row in enumerate(adapted_array):
+    for y, row in enumerate(new_array):
         for x, tile_type in enumerate(row):
-            if tile_type is not False:
+            if tile_type:
                 wall = factory.create_from_type(tile_type, None, x * 16, y * 16)
                 level.add_static(wall)
 
     return level
+
+
+# TODO Do we still need this?
+def retrieve(x, y, array):
+    if y <= -1 or x <= -1:
+        return None
+
+    try:
+        return array[y][x]
+    except IndexError:
+        return None
+
+
+def retrieve_tile_node(x, y, array):
+    if y <= -1 or x <= -1:
+        return TileNode(x, y, None)
+
+    try:
+        return TileNode(x, y, array[y][x])
+    except IndexError:
+        return TileNode(x, y, None)
+
+
+def add_coins(array):
+    x = 1
+    y = 2
+    closed_tiles = set()
+    open_tiles = [TileNode(x, y, False)]
+    while open_tiles:
+        tile = open_tiles.pop()
+        x = tile.x
+        y = tile.y
+        top = retrieve_tile_node(x, y - 1, array)
+        right = retrieve_tile_node(x + 1, y, array)
+        bottom = retrieve_tile_node(x, y + 1, array)
+        left = retrieve_tile_node(x - 1, y, array)
+        array[y][x] = c_small_dot
+        closed_tiles.add((tile.x, tile.y))
+        open_tiles.extend(
+            (t for t in (top, right, bottom, left)
+             if t.value is False and (t.x, t.y) not in closed_tiles))
+
+    return array
 
 
 def adapt_walls(array):
@@ -69,25 +113,10 @@ def adapt_walls(array):
             if not tile_val:
                 continue
 
-            try:
-                top = array[y - 1][x]
-            except IndexError:
-                top = None
-
-            try:
-                right = array[y][x + 1]
-            except IndexError:
-                right = None
-
-            try:
-                bottom = array[y + 1][x]
-            except IndexError:
-                bottom = None
-
-            try:
-                left = array[y][x - 1]
-            except IndexError:
-                left = None
+            top = retrieve(x, y - 1, array)
+            right = retrieve(x + 1, y, array)
+            bottom = retrieve(x, y + 1, array)
+            left = retrieve(x - 1, y, array)
 
             designation = m_single
             if not bottom and not top:
@@ -132,6 +161,15 @@ def adapt_walls(array):
             array[y][x] = designation
 
     return array
+
+
+class TileNode(object):
+    __slots__ = ('x', 'y', 'value')
+
+    def __init__(self, x, y, value):
+        self.x = x
+        self.y = y
+        self.value = value
 
 
 if __name__ == '__main__':

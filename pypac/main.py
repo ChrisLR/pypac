@@ -94,7 +94,7 @@ class Game(object):
     def _start_level(self):
         self.level = levelanalyser.make_level(self)
         for _input in self.inputs:
-            pacman = gameobjects.Pacman(self, 32, 32)
+            pacman = gameobjects.Pacman(self, 16, 16)
             self.players.append(Player(pacman, _input))
 
 
