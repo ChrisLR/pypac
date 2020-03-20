@@ -105,5 +105,5 @@ class WallBottomRight(Wall):
 
 @listing.register
 class GhostDoor(GameObject):
-    base_img = tile_sheet.get_region(3, 5)
+    base_img = tile_sheet.get_region(1, 5)
     type_id = "ghost_door"
