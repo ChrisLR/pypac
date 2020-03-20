@@ -34,7 +34,7 @@ class Actions(object):
                 host.sprite.image = host.right_animation
                 self._last_move = MOVE_RIGHT
 
-    def move_down(self):
+    def move_up(self):
         host = self.host
         if self.move_target is None:
             self.move_target = int(host.x / 16), int(host.y / 16) + 1
@@ -42,7 +42,7 @@ class Actions(object):
                 host.sprite.image = host.up_animation
                 self._last_move = MOVE_UP
 
-    def move_up(self):
+    def move_down(self):
         host = self.host
         if self.move_target is None:
             self.move_target = int(host.x / 16), int(host.y / 16) - 1
@@ -55,7 +55,9 @@ class Actions(object):
         grid_x, grid_y = self.move_target
         collider = host.game.level.static_collision_map
         collision = collider.check_collision(grid_x, grid_y)
-        if not collision or not collision.blocking:
+        if collision is True or (collision and collision.blocking):
+            self.move_target = None
+        else:
             tx = grid_x * 16
             ty = grid_y * 16
             if tx > host.x:
@@ -67,5 +69,3 @@ class Actions(object):
                 host.y += host.move_speed
             elif ty < host.y:
                 host.y -= host.move_speed
-        else:
-            self.move_target = None

@@ -21,7 +21,7 @@ class Game(object):
         gl.glMatrixMode(gl.GL_PROJECTION)
         gl.glLoadIdentity()
         gl.glPushMatrix()
-        gl.glScalef(1.5, 1.5, 0)
+        gl.glScalef(1.5, -1.5, 0)
         gl.glOrtho(-300, 724, 650, -150, -1, 1)
         self.level_batch.draw()
         self.game_objects_batch.draw()
@@ -93,6 +93,7 @@ class Game(object):
 
     def _start_level(self):
         self.level = levelanalyser.make_level(self)
+        ghost = gameobjects.GhostTeal(self, 32, 16)
         for _input in self.inputs:
             pacman = gameobjects.Pacman(self, 16, 16)
             self.players.append(Player(pacman, _input))

@@ -21,6 +21,11 @@ m_bottom_left = listing.get("wall_bottom_left")
 m_bottom_middle = listing.get("wall_bottom_middle")
 m_bottom_right = listing.get("wall_bottom_right")
 c_small_dot = listing.get("small_white_dot")
+d_ghost_door = listing.get("ghost_door")
+
+w_space = 0
+w_wall = 1
+w_door = 2
 
 
 def get_array():
@@ -41,9 +46,9 @@ def get_array():
                 array[y][x] = False
 
     # Lets try to reverse
-    # inverse_array = [row for row in array[::-1]]
+    inverse_array = [row for row in array[::-1]]
 
-    return array
+    return inverse_array
 
 
 def make_level(game):
@@ -102,7 +107,7 @@ def add_coins(array):
         closed_tiles.add((tile.x, tile.y))
         open_tiles.extend(
             (t for t in (top, right, bottom, left)
-             if t.value is False and (t.x, t.y) not in closed_tiles))
+             if t.value is w_space and (t.x, t.y) not in closed_tiles))
 
     return array
 
@@ -110,7 +115,9 @@ def add_coins(array):
 def adapt_walls(array):
     for y, row in enumerate(array):
         for x, tile_val in enumerate(row):
-            if not tile_val:
+            if tile_val == w_door:
+                array[y][x] = d_ghost_door
+            if tile_val != w_wall:
                 continue
 
             top = retrieve(x, y - 1, array)
@@ -174,8 +181,10 @@ class TileNode(object):
 
 def dump_level(array):
     def to_ascii(value):
-        if value:
+        if value == w_wall:
             return "#"
+        elif value == w_door:
+            return "-"
         return " "
 
     str_array = "\n".join(("".join((to_ascii(value) for value in row)) for row in array))
@@ -186,10 +195,19 @@ def dump_level(array):
 def read_level():
     def from_ascii(char):
         if char == "#":
-            return True
-        return False
+            return w_wall
+        elif char == " ":
+            return w_space
+        elif char == "-":
+            return w_door
+        return None
     with open('level.txt', 'r') as level_file:
         str_array = level_file.readlines()
     array = [[from_ascii(char) for char in line] for line in str_array]
 
     return array
+
+
+if __name__ == '__main__':
+    array = get_array()
+    dump_level(array)
