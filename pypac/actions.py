@@ -53,9 +53,13 @@ class Actions(object):
     def _move_to_target(self):
         host = self.host
         grid_x, grid_y = self.move_target
+        tx = grid_x * 16
+        ty = grid_y * 16
         collider = host.game.level.static_collision_map
         collision = collider.check_collision(grid_x, grid_y)
         if collision is True or (collision and collision.blocking):
+            self.move_target = None
+        elif tx == host.x and ty == host.y:
             self.move_target = None
         else:
             tx = grid_x * 16

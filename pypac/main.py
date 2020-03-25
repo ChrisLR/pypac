@@ -3,7 +3,8 @@ from pyglet import gl
 
 from pypac import gameobjects, levelanalyser
 from pypac.client import input
-from pypac.players import Player
+from pypac.controllers import Player, NPC
+from pypac.ai import GhostAI
 
 
 class Game(object):
@@ -11,6 +12,7 @@ class Game(object):
         self.inputs = []
         self.window = None
         self.players = []
+        self.npcs = []
         self.grid_size = 16
         self.game_objects_batch = pyglet.graphics.Batch()
         self.level_batch = pyglet.graphics.Batch()
@@ -38,6 +40,8 @@ class Game(object):
     def update(self, dt):
         for player in self.players:
             player.update()
+        for npc in self.npcs:
+            npc.update()
 
     def set_clear_color(self, rgb_color):
         r, g, b = rgb_color
@@ -93,7 +97,8 @@ class Game(object):
 
     def _start_level(self):
         self.level = levelanalyser.make_level(self)
-        ghost = gameobjects.GhostTeal(self, 32, 16)
+        ghost = gameobjects.GhostTeal(self, 32, 464)
+        self.npcs.append(NPC(ghost, GhostAI))
         for _input in self.inputs:
             pacman = gameobjects.Pacman(self, 16, 16)
             self.players.append(Player(pacman, _input))

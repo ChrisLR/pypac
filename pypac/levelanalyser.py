@@ -3,6 +3,7 @@ from PIL import Image
 from pypac.factory import LameFactory
 from pypac.gameobjects import listing
 from pypac.level import Level
+import copy
 
 m_single = listing.get("wall_single")
 m_row_left = listing.get("wall_row_left")
@@ -53,12 +54,15 @@ def get_array():
 
 def make_level(game):
     #array = get_array()
-    array = read_level()
+    with open('level.txt', 'r') as level_file:
+        str_array = level_file.readlines()
+    array = read_level(str_array)
+    origin_array = copy.deepcopy(array)
     new_array = adapt_walls(array)
     new_array = add_coins(new_array)
     rows = len(array)
     columns = len(array[0])
-    level = Level("generated", columns * 16, rows * 16)
+    level = Level("generated", columns * 16, rows * 16, origin_array)
     factory = LameFactory(game)
     for y, row in enumerate(new_array):
         for x, tile_type in enumerate(row):
@@ -192,7 +196,7 @@ def dump_level(array):
         level_file.writelines(str_array)
 
 
-def read_level():
+def read_level(str_array):
     def from_ascii(char):
         if char == "#":
             return w_wall
@@ -201,8 +205,7 @@ def read_level():
         elif char == "-":
             return w_door
         return None
-    with open('level.txt', 'r') as level_file:
-        str_array = level_file.readlines()
+
     array = [[from_ascii(char) for char in line] for line in str_array]
 
     return array

@@ -6,7 +6,7 @@ class Level(object):
     """
     A container of objects and statics representing a game level.
     """
-    def __init__(self, name, width, height):
+    def __init__(self, name, width, height, origin_array):
         self.name = name
         self.width = width
         self.height = height
@@ -16,6 +16,7 @@ class Level(object):
         self.background_image = None
         self.background_image_offset = None
         self.background_color = None
+        self.origin_array = origin_array
 
     def add_game_object(self, game_object):
         self.game_objects.append(game_object)

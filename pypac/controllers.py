@@ -19,3 +19,13 @@ class Player(object):
         elif Keymap.Down in keymaps:
             actions.move_down()
         self.game_object.update()
+
+
+class NPC(object):
+    def __init__(self, game_object, ai):
+        self.game_object = game_object
+        self.ai = ai(self)
+
+    def update(self):
+        self.ai.update()
+        self.game_object.update()
