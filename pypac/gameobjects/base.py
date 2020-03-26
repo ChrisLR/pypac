@@ -32,6 +32,9 @@ class GameObject(object):
     def y(self, value):
         self.sprite.y = value
 
+    def collide_with(self, other_object):
+        pass
+
 
 class Actor(GameObject):
     type_id = "actor"

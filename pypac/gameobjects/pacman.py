@@ -30,3 +30,8 @@ class Pacman(Actor):
     def __init__(self, game, x, y):
         super().__init__(game, x, y)
         self.move_speed = 2
+
+    def collide_with(self, other_object):
+        if other_object.type_id in {"small_white_dot", "medium_white_dot", "large_white_dot"}:
+            # TODO ADD SCORE
+            self.game.level.remove_static(other_object)
