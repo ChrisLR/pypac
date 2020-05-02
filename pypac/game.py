@@ -49,7 +49,9 @@ class Game(object):
         for npc in self.npcs:
             npc.update()
 
-        # TODO Collision code should not be here
+        self._collide_objects()
+
+    def _collide_objects(self):
         tuples = [(game_object, game_object.rectangle) for game_object in self.game_objects]
         for i in range(len(tuples) - 1):
             game_object, rectangle = tuples.pop(0)
@@ -60,26 +62,26 @@ class Game(object):
 
     def start(self):
         self._initialize_opengl()
-        self.initialize_keyboard_players()
-        self.initialize_joystick_players()
-        self.initialize_ui()
+        self._initialize_keyboard_players()
+        self._initialize_joystick_players()
+        self._initialize_ui()
         self._start_level()
         pyglet.clock.schedule_interval(self.update, 1 / 1000)
         pyglet.app.run()
 
-    def initialize_keyboard_players(self):
+    def _initialize_keyboard_players(self):
         keyboard_1 = input.Keyboard(input.KeyboardMapping.default())
         keyboard_2 = input.Keyboard(input.KeyboardMapping.alternate())
         self.inputs.append(keyboard_1)
         self.inputs.append(keyboard_2)
 
-    def initialize_ui(self):
+    def _initialize_ui(self):
         self.window = pyglet.window.Window(1024, 800)
         self.window.event(self.on_draw)
         self.window.event(self.on_key_press)
         self.window.event(self.on_key_release)
 
-    def initialize_joystick_players(self):
+    def _initialize_joystick_players(self):
         joysticks = pyglet.input.get_joysticks()
         for joystick in joysticks:
             joystick.open()
