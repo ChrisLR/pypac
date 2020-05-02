@@ -8,6 +8,10 @@ class Player(object):
 
     def update(self):
         game_object = self.game_object
+        if game_object.dead is True:
+            # TODO Do something like respawn
+            return
+
         actions = game_object.actions
         keymaps = self.input.get_keymaps()
         if Keymap.Left in keymaps:

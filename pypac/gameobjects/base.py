@@ -1,6 +1,7 @@
 import pyglet
 
 from pypac.actions import Actions
+from pypac import geom
 
 
 class GameObject(object):
@@ -10,6 +11,9 @@ class GameObject(object):
 
     def __init__(self, game, x, y):
         self.game = game
+        self.dead = False
+        self._rectangle = geom.Rectangle(x, y, 16, 16)
+        self.score = None
         self.sprite = pyglet.sprite.Sprite(
             x=x,
             y=y,
@@ -32,7 +36,16 @@ class GameObject(object):
     def y(self, value):
         self.sprite.y = value
 
+    @property
+    def rectangle(self):
+        self._rectangle.x = self.sprite.x
+        self._rectangle.y = self.sprite.y
+        return self._rectangle
+
     def collide_with(self, other_object):
+        pass
+
+    def die(self):
         pass
 
 

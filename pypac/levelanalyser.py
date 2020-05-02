@@ -56,6 +56,11 @@ def make_level(game):
     #array = get_array()
     with open('level.txt', 'r') as level_file:
         str_array = level_file.readlines()
+
+    # Strip away the newlines from each row, since they are kept by readlines()
+    for i, line in enumerate(str_array):
+        str_array[i] = line[:-1]
+
     array = read_level(str_array)
     origin_array = copy.deepcopy(array)
     new_array = adapt_walls(array)

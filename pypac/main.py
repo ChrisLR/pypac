@@ -17,6 +17,7 @@ class Game(object):
         self.game_objects_batch = pyglet.graphics.Batch()
         self.level_batch = pyglet.graphics.Batch()
         self.level = None
+        self.game_objects = []
 
     def on_draw(self):
         self.window.clear()
@@ -42,6 +43,15 @@ class Game(object):
             player.update()
         for npc in self.npcs:
             npc.update()
+
+        # TODO Collision code should not be here
+        tuples = [(game_object, game_object.rectangle) for game_object in self.game_objects]
+        for i in range(len(tuples) - 1):
+            game_object, rectangle = tuples.pop(0)
+            for other_object, other_rectangle in tuples:
+                if rectangle.intersects(other_rectangle):
+                    game_object.collide_with(other_object)
+                    other_object.collide_with(game_object)
 
     def set_clear_color(self, rgb_color):
         r, g, b = rgb_color
@@ -98,9 +108,11 @@ class Game(object):
     def _start_level(self):
         self.level = levelanalyser.make_level(self)
         ghost = gameobjects.GhostTeal(self, 32, 464)
+        self.game_objects.append(ghost)
         self.npcs.append(NPC(ghost, GhostAI))
         for _input in self.inputs:
             pacman = gameobjects.Pacman(self, 16, 16)
+            self.game_objects.append(pacman)
             self.players.append(Player(pacman, _input))
 
 

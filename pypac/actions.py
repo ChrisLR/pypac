@@ -12,9 +12,24 @@ class Actions(object):
 
     def update(self):
         host = self.host
+        game = host.game
+        level = game.level
         if self.move_target is not None:
             if host.x == self.move_target[0] * 16 and host.y == self.move_target[1] * 16:
-                self.move_target = None
+                if host.x < 0:
+                    host.x = level.width
+                    self.move_target = int(host.x / 16) - 1, self.move_target[1]
+                elif host.x > level.width:
+                    host.x = -16
+                    self.move_target = 0, self.move_target[1]
+                elif host.y < 0:
+                    host.y = level.height
+                    self.move_target = self.move_target[0], int(host.y / 16) - 1
+                elif host.y > level.height:
+                    host.y = -16
+                    self.move_target = self.move_target[0], 0
+                else:
+                    self.move_target = None
             else:
                 self._move_to_target()
 
@@ -58,7 +73,7 @@ class Actions(object):
         level = host.game.level
         collider = level.static_collision_map
         collision = collider.check_collision(grid_x, grid_y)
-        if collision is True or (collision and collision.blocking):
+        if collision and collision.blocking:
             self.move_target = None
         elif tx == host.x and ty == host.y:
             self.move_target = None

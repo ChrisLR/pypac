@@ -10,6 +10,10 @@ class Ghost(Actor):
         super().__init__(game, x, y)
         self.move_speed = 2
 
+    def collide_with(self, other_object):
+        if other_object.type_id == "pacman":
+            other_object.die()
+
 
 @listing.register
 class GhostRed(Ghost):

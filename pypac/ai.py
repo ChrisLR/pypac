@@ -15,7 +15,13 @@ class GhostAI(object):
             # TODO This indirect way of getting pacman must be improved
             game = actor.game
             players = game.players
-            pacmen = (p.game_object for p in players if p.game_object.type_id == "pacman")
+            pacmen = [
+                p.game_object for p in players
+                if p.game_object.type_id == "pacman" and not p.game_object.dead
+            ]
+            if not pacmen:
+                return
+
             closest_target = min(pacmen, key=lambda p: utils.get_distance(actor, p))
             path = pathfinding.a_star(actor, closest_target, game.level.origin_array)
             if path is not None:

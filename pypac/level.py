@@ -46,8 +46,8 @@ class CollisionMap(object):
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.width_tiles = int(math.ceil(width / 16)) + 1
-        self.height_tiles = int(math.ceil(height / 16)) + 1
+        self.width_tiles = int(math.ceil(width / 16))
+        self.height_tiles = int(math.ceil(height / 16))
         self._collision_map = [[None for _ in range(self.height_tiles)] for _ in range(self.width_tiles)]
 
     def add_collider(self, collider, rectangle):
@@ -60,8 +60,8 @@ class CollisionMap(object):
                 self._collision_map[x][y] = collider
 
     def check_collision(self, x, y):
-        if x <= 0 or y <= 0 or x >= self.width or y >= self.height:
-            return True
+        if x < 0 or y < 0 or x >= self.width_tiles or y >= self.height_tiles:
+            return None
         return self._collision_map[x][y]
 
     def check_collision_point(self, point):
