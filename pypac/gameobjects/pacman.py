@@ -3,7 +3,7 @@ import pyglet
 from pypac.client.graphics import sprite_sheet
 from pypac.gameobjects.base import Actor
 from pypac.gameobjects import listing
-from pypac.score import Score
+from pypac.components.score import Score
 
 
 @listing.register

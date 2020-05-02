@@ -1,9 +1,10 @@
+import copy
+
 from PIL import Image
 
-from pypac.factory import LameFactory
+from pypac import services
 from pypac.gameobjects import listing
-from pypac.level import Level
-import copy
+from pypac.levels.level import Level
 
 m_single = listing.get("wall_single")
 m_row_left = listing.get("wall_row_left")
@@ -31,7 +32,7 @@ w_door = 2
 
 def get_array():
     array = [[False for _ in range(28)] for _ in range(31)]
-    im = Image.open("client\\graphics\\emptylevel.png")
+    im = Image.open("../client/graphics/emptylevel.png")
     im = im.convert('RGB')
     img_width, img_height = im.size
     for y, i in enumerate(range(0, img_height,  8)):
@@ -54,7 +55,7 @@ def get_array():
 
 def make_level(game):
     #array = get_array()
-    with open('level.txt', 'r') as level_file:
+    with open('levels\\level.txt', 'r') as level_file:
         str_array = level_file.readlines()
 
     # Strip away the newlines from each row, since they are kept by readlines()
@@ -68,7 +69,7 @@ def make_level(game):
     rows = len(array)
     columns = len(array[0])
     level = Level("generated", columns * 16, rows * 16, origin_array)
-    factory = LameFactory(game)
+    factory = services.LameFactory(game)
     for y, row in enumerate(new_array):
         for x, tile_type in enumerate(row):
             if tile_type:

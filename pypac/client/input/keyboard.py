@@ -1,6 +1,6 @@
 import pyglet
 
-from pypac.keymap import Keymap
+from pypac.client.keymap import Keymap
 
 
 class Keyboard(object):

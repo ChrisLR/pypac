@@ -1,4 +1,4 @@
-from pypac.keymap import Keymap
+from pypac.client.keymap import Keymap
 
 
 class Player(object):

@@ -1,4 +1,6 @@
-from pypac import geom, levelanalyser, pathfinding
+from pypac import geom
+from pypac.ai import pathfinding
+from pypac.levels import levelanalyser
 
 
 def test_easy_pathfind():

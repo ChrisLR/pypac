@@ -1,4 +1,5 @@
 import math
+
 from pypac.geom import Rectangle
 
 
@@ -13,9 +14,6 @@ class Level(object):
         self.game_objects = []
         self.statics = []
         self.static_collision_map = CollisionMap(width, height)
-        self.background_image = None
-        self.background_image_offset = None
-        self.background_color = None
         self.origin_array = origin_array
 
     def add_game_object(self, game_object):
@@ -25,10 +23,6 @@ class Level(object):
         rectangle = Rectangle(static_object.x, static_object.y, 16, 16)
         self.statics.append(static_object)
         self.static_collision_map.add_collider(static_object, rectangle)
-
-    def set_background_image(self, image, offset):
-        self.background_image = image
-        self.background_image_offset = offset
 
     def remove_static(self, static_object):
         rectangle = Rectangle(static_object.x, static_object.y, 16, 16)
