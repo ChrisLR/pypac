@@ -1,3 +1,9 @@
+"""
+This is the legacy code used to analyse the image and create an array from it.
+It will eventually be superceded by something better.
+"""
+
+
 import copy
 
 from PIL import Image
@@ -30,7 +36,7 @@ w_wall = 1
 w_door = 2
 
 
-def get_array():
+def get_array_from_image():
     array = [[False for _ in range(28)] for _ in range(31)]
     im = Image.open("../client/graphics/emptylevel.png")
     im = im.convert('RGB')
@@ -47,14 +53,12 @@ def get_array():
             else:
                 array[y][x] = False
 
-    # Lets try to reverse
     inverse_array = [row for row in array[::-1]]
 
     return inverse_array
 
 
 def make_level(game):
-    #array = get_array()
     with open('levels\\level.txt', 'r') as level_file:
         str_array = level_file.readlines()
 
@@ -218,5 +222,5 @@ def read_level(str_array):
 
 
 if __name__ == '__main__':
-    array = get_array()
+    array = get_array_from_image()
     dump_level(array)
