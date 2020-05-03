@@ -171,7 +171,7 @@ class LevelArrayAdapter(object):
         for y, row in enumerate(new_array):
             for x, tile_type in enumerate(row):
                 if tile_type:
-                    wall = factory.create_from_type(tile_type, None, x * 16, y * 16)
+                    wall = factory.create_from_type(tile_type.value, None, x * 16, y * 16)
                     level.add_static(wall)
         
         return level
