@@ -1,10 +1,9 @@
-from pypac import geom
+from pypac import geom, levelanalyser
 from pypac.ai import pathfinding
-from pypac.levels import levelanalyser
 
 
 def test_easy_pathfind():
-    level_array = levelanalyser.read_level(simple_level)
+    level_array = levelanalyser.read_str_array(simple_level)
     origin = geom.Point(1 * 16, 1 * 16)
     target = geom.Point(1 * 16, 5 * 16)
     result_coordinates = list(pathfinding.a_star(origin, target, level_array))
@@ -16,7 +15,7 @@ def test_easy_pathfind():
 
 
 def test_harder_pathfind():
-    level_array = levelanalyser.read_level(simple_level)
+    level_array = levelanalyser.read_str_array(simple_level)
     origin = geom.Point(1, 1)
     target = geom.Point(16, 5)
     result_coordinates = list(pathfinding.a_star(origin, target, level_array))
@@ -32,7 +31,7 @@ def test_harder_pathfind():
 
 
 def test_complete_pathfind():
-    level_array = levelanalyser.read_level(complete_level)
+    level_array = levelanalyser.read_str_array(complete_level)
     origin = geom.Point(1, 1)
     target = geom.Point(1, 29)
     result_coordinates = list(pathfinding.a_star(origin, target, level_array))

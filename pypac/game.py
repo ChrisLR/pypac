@@ -5,7 +5,6 @@ from pypac import gameobjects, services
 from pypac.ai import GhostAI
 from pypac.client import input
 from pypac.components.controllers import NPC, Player
-from pypac.levels import levelanalyser
 
 GRID_SIZE = 16
 
@@ -15,8 +14,10 @@ class Game(object):
         self.game_objects = []
         self.game_objects_batch = pyglet.graphics.Batch()
         self.grid_size = GRID_SIZE
+        self.factory = services.LameFactory(self)
         self.inputs = []
         self.level = None
+        self.level_loader = services.LevelLoader(self)
         self.level_batch = pyglet.graphics.Batch()
         self.locator = services.LocatorService(self)
         self.players = []
@@ -106,7 +107,9 @@ class Game(object):
         gl.glViewport(0, 0, 1024, 800)
 
     def _start_level(self):
-        self.level = levelanalyser.make_level(self)
+        # TODO This is another object's responsability
+        # TODO Maybe a game director?
+        self.level = self.level_loader.load_level("level-1")
         ghost = gameobjects.GhostTeal(self, 32, 464)
         self.game_objects.append(ghost)
         self.npcs.append(NPC(ghost, GhostAI))
