@@ -19,6 +19,7 @@ class GhostAI(object):
             self._steps = 0
             game = actor.game
             pacmen = game.locator.get_pacmen()
+            pacmen = [p for p in pacmen if not p.dead]
             if not pacmen:
                 return
 
