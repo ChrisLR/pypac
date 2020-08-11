@@ -110,9 +110,12 @@ class Game(object):
         # TODO This is another object's responsability
         # TODO Maybe a game director?
         self.level = self.level_loader.load_level("level-1")
-        ghost = gameobjects.GhostTeal(self, 32, 464)
-        self.game_objects.append(ghost)
-        self.npcs.append(NPC(ghost, GhostAI))
+        ghost_classes = (gameobjects.GhostPink, gameobjects.GhostTeal, gameobjects.GhostRed, gameobjects.GhostPeach)
+        for i, ghost_class in enumerate(ghost_classes):
+            ghost = ghost_class(self, 32 * i, 464)
+            self.game_objects.append(ghost)
+            self.npcs.append(NPC(ghost, GhostAI))
+
         for _input in self.inputs:
             pacman = gameobjects.Pacman(self, 16, 16)
             self.game_objects.append(pacman)
